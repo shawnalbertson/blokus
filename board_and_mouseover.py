@@ -110,6 +110,8 @@ def start_game(player1, player2):
     screen = Screen(800, 800, 30)
     screen.start_display()
     board = Board(screen, 20, 20)
+    mouse_x = 0
+    mouse_y  =0
     while True:
         for event in pygame.event.get():
             if event.type == MOUSEMOTION:

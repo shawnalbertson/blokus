@@ -106,22 +106,9 @@ class Board:
                 if not n == "." and check == "w":
                     self.array[i1 + start[0]][i2 + start[1]] = n
                 elif not check == "w":
-                    raise NameError('No')
+                    # raise NameError('No')
                 else:
                     continue
-
-
-
-    # def play_piece(self, piece):
-    #     """Modify the board by playing a piece
-    #     """
-    #     for event in pygame.event.get():
-    #         if pygame.mouse.get_pressed()[0]:
-    #             mouse_x, mouse_y = event.pos
-    #             mouse_x = int(mouse_x/self.size)
-    #             mouse_y = int(mouse_y/self.size)
-    #             self.modify_board(piece, (mouse_x, mouse_y))
-
 
 class Piece(Board):
 
