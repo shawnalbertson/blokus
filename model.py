@@ -21,6 +21,7 @@ class Tile:
         self.image = pygame.transform.scale(im, (size, size))
         self.size = size
         self.color_code = color_code
+    
 
 class Tiles:
     """A more convenient way to store multiple tile objects that share information
