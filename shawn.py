@@ -1,7 +1,8 @@
 import pygame
 import time
 
-from model import Board, Piece, piece_size, load_image
+from model import piece_size, Tile, Tiles, Board, Piece
+from controller import board_array
 
 
 
@@ -21,33 +22,46 @@ screen.fill(background_color)
 # Define the size of one tile
 size = piece_size(board_size, 20)
 
-# Load predrawn tiles and give them names that match
-green = load_image("green.png", size)
-red = load_image("red.png", size)
-yellow = load_image("yellow.png", size)
-blue = load_image("blue.png", size)
-white = load_image("white.png", size)
 
+# Make the necessary Tile objects
+white = Tile("white.png", size, ".")
+green = Tile("green.png", size, "g")
+red = Tile("red.png", size, "r")
+yellow = Tile("yellow.png", size, "y")
+blue = Tile("blue.png", size, "b")
 
-b = Board(screen, size, white, green, red, yellow, blue)
+# Add them to a Tiles object to be concise
+tiles = Tiles(white, green, red, yellow, blue)
 
-# These few lines place an L5 piece in the top left corner
-# Next steps: more general
-#   make the blitting steps for every piece
+# Call board_array() to make the base board
+board_array = board_array()
 
-L5 = Piece(screen, size, red, [["x", "x", "x", ".", "."], ["x",".",".",".","."], ["x",".",".",".","."]])
+# Create board object from board_array
+b = Board(screen, tiles, board_array, False)
 
+# Here are a few arrays that define pieces
+L5_array = [["x", "x", "x"], ["x",".","."], ["x",".","."]]
+plus_array = [[".", "x", "."], ["x", "x", "x"], [".", "x", "."]]
+N_array = [[".", ".", "x", "x"], ["x", "x", "x", "."]]
 
-# Stop the code when the window is closed
+# Here we create Piece objects using these arrays
+L5 = Piece(screen, tiles, L5_array)
+plus = Piece(screen, tiles, plus_array)
+N = Piece(screen, tiles, N_array)
+
+# Assign colors to the pieces
+L5.assign_color("r")
+plus.assign_color("b")
+N.assign_color("y")
+
+# Visualize it
 running = True
 while running:
-    b.make_board()
-    # L5(red, 1, 1)
-    L5.draw_piece()
-    time.sleep(.01)
+    b.draw()
+    # L5.draw()
+    # plus.draw()
+    N.draw()
     pygame.display.flip()
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
-    
-
