@@ -71,6 +71,7 @@ def play_game(board, piece, draw = True):
         for event in pygame.event.get():
 
             if pygame.mouse.get_pressed()[0]:
+                # snap to the integer position
                 mouse_x, mouse_y = event.pos
                 mouse_x = int(mouse_x/size)
                 mouse_y = int(mouse_y/size)
@@ -87,8 +88,8 @@ play_game(b, L5)
 play_game(b, blank)
 play_game(b, plus)
 play_game(b, blank)
-play_game(b, N)
-play_game(b, blank)
-L5.assign_color("y")
-play_game(b, L5)
-play_game(b, blank)
+# play_game(b, N)
+# play_game(b, blank)
+# L5.assign_color("y")
+# play_game(b, L5)
+# play_game(b, blank)

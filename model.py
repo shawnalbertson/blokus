@@ -102,8 +102,14 @@ class Board:
         """
         for i1, m in enumerate(modifier.array):
             for i2, n in enumerate(m):
-                if not n == ".":
+                check = self.array[i1 + start[0]][i2 + start[1]]
+                if not n == "." and check == "w":
                     self.array[i1 + start[0]][i2 + start[1]] = n
+                elif not check == "w":
+                    raise NameError('No')
+                else:
+                    continue
+
 
 
     # def play_piece(self, piece):
