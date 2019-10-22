@@ -100,8 +100,22 @@ class Board:
 
         This is a good place to check that the piece fits on the board in the first place
         """
-        
-        pass
+        for i1, m in enumerate(modifier.array):
+            for i2, n in enumerate(m):
+                if not n == ".":
+                    self.array[i1 + start[0]][i2 + start[1]] = n
+
+
+    # def play_piece(self, piece):
+    #     """Modify the board by playing a piece
+    #     """
+    #     for event in pygame.event.get():
+    #         if pygame.mouse.get_pressed()[0]:
+    #             mouse_x, mouse_y = event.pos
+    #             mouse_x = int(mouse_x/self.size)
+    #             mouse_y = int(mouse_y/self.size)
+    #             self.modify_board(piece, (mouse_x, mouse_y))
+
 
 class Piece(Board):
 
@@ -118,5 +132,5 @@ class Piece(Board):
         """
         for i1, m in enumerate(self.array):
             for i2, n in enumerate(m):
-                if n == "x":
+                if not n == ".":
                     self.array[i1][i2] = color

@@ -2,8 +2,6 @@ import pygame
 import time
 
 from model import piece_size, Tile, Tiles, Board, Piece
-from controller import board_array
-
 
 
 # Initialize pygame, screen object
@@ -34,6 +32,16 @@ blue = Tile("blue.png", size, "b")
 tiles = Tiles(white, green, red, yellow, blue)
 
 # Call board_array() to make the base board
+def board_array():
+    board = []
+    row = []
+    for m in range(20):
+        for n in range(20):
+            row.append("w")
+        board.append(row)
+        row = []
+    return board
+
 board_array = board_array()
 
 # Create board object from board_array
@@ -43,25 +51,44 @@ b = Board(screen, tiles, board_array, False)
 L5_array = [["x", "x", "x"], ["x",".","."], ["x",".","."]]
 plus_array = [[".", "x", "."], ["x", "x", "x"], [".", "x", "."]]
 N_array = [[".", ".", "x", "x"], ["x", "x", "x", "."]]
+blank_array = [["."]]
 
 # Here we create Piece objects using these arrays
 L5 = Piece(screen, tiles, L5_array)
 plus = Piece(screen, tiles, plus_array)
 N = Piece(screen, tiles, N_array)
+blank = Piece(screen, tiles, blank_array)
 
 # Assign colors to the pieces
 L5.assign_color("r")
 plus.assign_color("b")
 N.assign_color("y")
 
-# Visualize it
-running = True
-while running:
-    b.draw()
-    # L5.draw()
-    plus.draw()
-    # N.draw()
-    pygame.display.flip()
-    for event in pygame.event.get():
-        if event.type == pygame.QUIT:
-            running = False
+def play_game(board, piece, draw = True):
+    while draw:
+        board.draw()
+        piece.draw()
+        for event in pygame.event.get():
+
+            if pygame.mouse.get_pressed()[0]:
+                mouse_x, mouse_y = event.pos
+                mouse_x = int(mouse_x/size)
+                mouse_y = int(mouse_y/size)
+                board.modify_board(piece, (mouse_x, mouse_y)) 
+                draw = False
+            pygame.display.flip()
+
+            if event.type == pygame.QUIT:
+                draw = False
+
+
+
+play_game(b, L5)
+play_game(b, blank)
+play_game(b, plus)
+play_game(b, blank)
+play_game(b, N)
+play_game(b, blank)
+L5.assign_color("y")
+play_game(b, L5)
+play_game(b, blank)
