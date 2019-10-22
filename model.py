@@ -100,6 +100,7 @@ class Board:
 
         This is a good place to check that the piece fits on the board in the first place
         """
+        
         pass
 
 class Piece(Board):

@@ -59,8 +59,8 @@ running = True
 while running:
     b.draw()
     # L5.draw()
-    # plus.draw()
-    N.draw()
+    plus.draw()
+    # N.draw()
     pygame.display.flip()
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
