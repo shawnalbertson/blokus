@@ -47,7 +47,7 @@ class Board:
     get_mouse determines if the image will follow your mouse or not
     """
 
-    def __init__(self, screen, tiles, array, get_mouse = True):
+    def __init__(self, Screen, get_mouse = True):
 
         self.screen = screen
         self.size = tiles.size
@@ -128,3 +128,4 @@ class Piece(Board):
             for i2, n in enumerate(m):
                 if not n == ".":
                     self.array[i1][i2] = color
+    
