@@ -96,13 +96,22 @@ class Player:
             self.click_color = (0, 255, 0)
         if self.player_color == "yellow":
             self.click_color = (247, 255, 0)
-
-class Pieces:
-    def __init__(self, Player1, Player2):
-        self.player1 = Player1
-        self.player2 = Player2
     
+    # def piece_1(self, Piece):
+        
+
     # create a new function in this class that will instantiate each piece for both of the players
+# class Pieces:
+#     def __init__(self, Board):
+#         self.board = Board
+
+#     def draw_piece_0(self,x,y):
+#         # 5 in a straight line
+#         self.piece0 = [self.board.tiles[x][y], self.board.tiles[x+1][y], self.board.tiles[x+2][y], self.board.tiles[x-1][y], self.board.tiles[x-2][y]]
+#         self.piece0.is_used = 0
+    
+#     def draw_piece_1(self,x,y):
+#         self.piece1 = [self.board.tiles[x]
 
 def start_game(player1, player2):
     player_1 = Player(player1, 'blue')
