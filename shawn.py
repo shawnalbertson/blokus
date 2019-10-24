@@ -75,6 +75,7 @@ def play_game(board, piece, draw = True):
                 mouse_x, mouse_y = event.pos
                 mouse_x = int(mouse_x/size)
                 mouse_y = int(mouse_y/size)
+                
                 board.modify_board(piece, (mouse_x, mouse_y)) 
                 draw = False
             pygame.display.flip()

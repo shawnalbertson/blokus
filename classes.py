@@ -17,7 +17,7 @@ class Screen:
     
     def display_update(self):
         pygame.display.update()
-        self.clock.tick(30)
+        self.clock.tick(self.fps)
 
 class Player:
     def __init__(self, player_name, player_color):
@@ -52,7 +52,7 @@ class Tile:
         self.rect = pygame.Rect(self.tile_x, self.tile_y, self.tile_size, self.tile_size)
         
         # # draw the rectangle
-        # pygame.draw.rect(Screen.screen, self.color, self.rect, 0)
+        pygame.draw.rect(Screen.screen, self.color, self.rect, 0)
 
         # load the image and then scale it
         im = pygame.image.load('white.png')
@@ -83,13 +83,13 @@ class Tile:
 
 
     def draw_tile(self, Screen):
-        Screen.blit(colors(self.color_code), self.rect)
+        Screen.blit(self.colors(self.color_code), self.tile_x, self.tile_y)
     
     def assign_color_tile(self,Screen,Player):
-        if self.color == 'w':
-            self.color = Player.click_color
+        if self.color_code == 'w':
+            self.color_code = Player.click_color
         else:
-            self.color = self.color
+            self.color_code = self.color
 
 
 class Board:
@@ -102,8 +102,10 @@ class Board:
         # creating the tiles in a loop
         for row, m in enumerate(self.tiles):
             self.column = []
-            for column,n in enumerate(m):
-                self.column.append(Tile(Screen, self.tile_size, row*self.tile_size, column*self.tile_size))
+            for column, n in enumerate(m):
+                tile = Tile(Screen, self.tile_size, row*self.tile_size, column*self.tile_size)
+                self.column.append(tile)
+                tile.draw_tile(self.screen)
             self.tiles.append(self.column)
 
     def draw(self):
