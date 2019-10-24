@@ -83,7 +83,7 @@ class Tile:
 
 
     def draw_tile(self, Screen):
-        Screen.blit(self.colors(self.color_code), self.tile_x, self.tile_y)
+        Screen.blit(self.colors(self.color_code), (self.tile_x, self.tile_y))
     
     def assign_color_tile(self,Screen,Player):
         if self.color_code == 'w':
