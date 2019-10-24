@@ -137,7 +137,7 @@ def start_game(player1, player2):
                     board.tiles[x][y].redraw_tile(screen,player_1)
         screen.display_update()
 
-start_game('Shawn', 'Navi')
+start_game('Shawn', 'Navi', {}, {})
 
 
 
