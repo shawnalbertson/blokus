@@ -14,6 +14,7 @@ def start_game(player1, player2, player1color, player2color):
     running = True
     while running:
         board.draw()
+        print(board.tiles)
         screen.display_update()        
         for event in pygame.event.get():
             if event.type == pygame.QUIT:

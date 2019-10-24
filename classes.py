@@ -12,7 +12,7 @@ class Screen:
 
         # Avoid copyright issues with convenient typos
         pygame.display.set_caption('Blockus')
-
+        self.screen.fill((177,177,177))
         self.clock = pygame.time.Clock()
     
     def display_update(self):
@@ -44,6 +44,7 @@ class Tile:
         self.tile_size = tile_size
         self.tile_x = tile_x
         self.tile_y = tile_y
+        self.screen = Screen
 
         # set the tiles to grey initially
         self.color_code = "w"
@@ -52,7 +53,8 @@ class Tile:
         self.rect = pygame.Rect(self.tile_x, self.tile_y, self.tile_size, self.tile_size)
         
         # # draw the rectangle
-        pygame.draw.rect(Screen.screen, self.color, self.rect, 0)
+        
+        # pygame.draw.rect(Screen.screen, (177,177,177), self.rect, 0)
 
         # load the image and then scale it
         im = pygame.image.load('white.png')
@@ -64,27 +66,27 @@ class Tile:
         else:
             return False
     
-    def colors(self, color_code):
-        if color_code == "w":
+    def colors(self):
+        if self.color_code == "w":
             self.image = pygame.transform.scale(pygame.image.load("white.png"), (self.tile_size, self.tile_size))
             return self.image
-        elif color_code == "g":
+        elif self.color_code == "g":
             self.image = pygame.transform.scale(pygame.image.load("green.png"), (self.tile_size, self.tile_size))
             return self.image
-        elif color_code == "r":
+        elif self.color_code == "r":
             self.image = pygame.transform.scale(pygame.image.load("red.png"), (self.tile_size, self.tile_size))
             return self.image
-        elif color_code == "y":
+        elif self.color_code == "y":
             self.image = pygame.transform.scale(pygame.image.load("yellow.png"), (self.tile_size, self.tile_size))
             return self.image
-        elif color_code == "b":
+        elif self.color_code == "b":
             self.image = pygame.transform.scale(pygame.image.load("blue.png"), (self.tile_size, self.tile_size))
             return self.image
 
 
-    def draw_tile(self, Screen):
-        Screen.blit(self.colors(self.color_code), self.tile_x, self.tile_y)
-    
+    def draw_tile(self):
+        self.screen.blit(self.colors(), (self.tile_x, self.tile_y))
+        # print(self.colors(self.color_code))
     def assign_color_tile(self,Screen,Player):
         if self.color_code == 'w':
             self.color_code = Player.click_color
@@ -95,23 +97,25 @@ class Tile:
 class Board:
     def __init__(self, Screen):
         self.screen = Screen
-        self.tiles = []
         self.rows = 20
         self.columns = 20
         self.tile_size = int(self.screen.board_screen/self.rows)
+        
+        self.tiles = []
         # creating the tiles in a loop
-        for row, m in enumerate(self.tiles):
+        for row in range(0,self.rows):
             self.column = []
-            for column, n in enumerate(m):
-                tile = Tile(Screen, self.tile_size, row*self.tile_size, column*self.tile_size)
-                self.column.append(tile)
-                tile.draw_tile(self.screen)
+            for column in range(0,self.columns):
+                self.tile = Tile(Screen, self.tile_size, row*self.tile_size, column*self.tile_size)
+                self.column.append(self.tile)
+                self.tile.draw_tile()
+                
             self.tiles.append(self.column)
 
     def draw(self):
         for row, m in enumerate(self.tiles):
             for column, n in enumerate(m):
-                n.draw_tile(self.screen)  
+                n.draw_tile()  
     
     def modify_board(self, Piece, mouse_location):
         for row, m in enumerate(Piece):

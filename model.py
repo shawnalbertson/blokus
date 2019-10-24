@@ -78,7 +78,7 @@ class Board:
                 elif n == "g":
                     self.screen.blit(self.green, (self.size*i1 + start_x, self.size*i2 + start_y))
                 elif n == "r":
-                    self.screen.blit(self.red, (self.size*i1 + start_x, self.size*i2 + start_y))
+                    self.red, (self.size*i1 + start_x, self.size*i2 + start_y))
                 elif n == "y":
                     self.screen.blit(self.yellow, (self.size*i1 + start_x, self.size*i2 + start_y))
                 elif n == "b":
