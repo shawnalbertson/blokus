@@ -3,16 +3,16 @@ from pygame.locals import *
 
 class Screen:
     def __init__(self, board_screen_dimension, fps):
-        self.board_screen = board_screen_dimension
+        self.board_screen_dimension = board_screen_dimension
         self.fps = fps
+        self.board_screen = pygame.display.set_mode((self.board_screen_dimension, self.board_screen_dimension))
 
     def start_board_display(self):
         pygame.init()
-        self.screen = pygame.display.set_mode((self.board_screen, self.board_screen))
 
         # Avoid copyright issues with convenient typos
         pygame.display.set_caption('Blockus')
-        self.screen.fill((177,177,177))
+        self.board_screen.fill((177,177,177))
         self.clock = pygame.time.Clock()
     
     def display_update(self):
@@ -40,14 +40,14 @@ class Player:
         self.N = Piece(Screen, [[".", ".", "x", "x"], ["x", "x", "x", "."]], self.click_color)
 
 class Tile:
-    def __init__(self, Screen, tile_size, tile_x, tile_y):
+    def __init__(self, Screen, tile_size, tile_x, tile_y, init_color):
         self.tile_size = tile_size
         self.tile_x = tile_x
         self.tile_y = tile_y
         self.screen = Screen
 
         # set the tiles to grey initially
-        self.color_code = "w"
+        self.color_code = init_color
 
         # define a rectangle
         self.rect = pygame.Rect(self.tile_x, self.tile_y, self.tile_size, self.tile_size)
@@ -56,9 +56,9 @@ class Tile:
         
         # pygame.draw.rect(Screen.screen, (177,177,177), self.rect, 0)
 
-        # load the image and then scale it
-        im = pygame.image.load('white.png')
-        self.image = pygame.transform.scale(im, (self.tile_size, self.tile_size))
+        # # load the image and then scale it
+        # im = pygame.image.load('white.png')
+        # self.image = pygame.transform.scale(im, (self.tile_size, self.tile_size))
 
     def check_mouse_over(self, mouse_x, mouse_y):
         if self.rect.collidepoint(mouse_x,mouse_y):
@@ -68,24 +68,24 @@ class Tile:
     
     def colors(self):
         if self.color_code == "w":
-            self.image = pygame.transform.scale(pygame.image.load("white.png"), (self.tile_size, self.tile_size))
+            self.image = pygame.transform.scale(pygame.image.load("white.png").convert(), (self.tile_size, self.tile_size))
             return self.image
         elif self.color_code == "g":
-            self.image = pygame.transform.scale(pygame.image.load("green.png"), (self.tile_size, self.tile_size))
+            self.image = pygame.transform.scale(pygame.image.load("green.png").convert(), (self.tile_size, self.tile_size))
             return self.image
         elif self.color_code == "r":
-            self.image = pygame.transform.scale(pygame.image.load("red.png"), (self.tile_size, self.tile_size))
+            self.image = pygame.transform.scale(pygame.image.load("red.png").convert(), (self.tile_size, self.tile_size))
             return self.image
         elif self.color_code == "y":
-            self.image = pygame.transform.scale(pygame.image.load("yellow.png"), (self.tile_size, self.tile_size))
+            self.image = pygame.transform.scale(pygame.image.load("yellow.png").convert(), (self.tile_size, self.tile_size))
             return self.image
         elif self.color_code == "b":
-            self.image = pygame.transform.scale(pygame.image.load("blue.png"), (self.tile_size, self.tile_size))
+            self.image = pygame.transform.scale(pygame.image.load("blue.png").convert(), (self.tile_size, self.tile_size))
             return self.image
 
 
-    def draw_tile(self, Screen):
-        Screen.blit(self.colors(self.color_code), (self.tile_x, self.tile_y))
+    def draw_tile(self):
+        self.screen.board_screen.blit(self.colors(), self.rect)
     
     def assign_color_tile(self,Screen,Player):
         if self.color_code == 'w':
@@ -99,14 +99,13 @@ class Board:
         self.screen = Screen
         self.rows = 20
         self.columns = 20
-        self.tile_size = int(self.screen.board_screen/self.rows)
-        
+        self.tile_size = int(self.screen.board_screen_dimension/self.rows)
         self.tiles = []
         # creating the tiles in a loop
         for row in range(0,self.rows):
             self.column = []
             for column in range(0,self.columns):
-                self.tile = Tile(Screen, self.tile_size, row*self.tile_size, column*self.tile_size)
+                self.tile = Tile(Screen, self.tile_size, row*self.tile_size, column*self.tile_size, 'w')
                 self.column.append(self.tile)
                 self.tile.draw_tile()
                 
@@ -141,15 +140,37 @@ class Piece(Board):
         for row, m in enumerate(self.piece_array):
             for column, n in enumerate(m):
                 if not n == ".":
-                    self.array[row][column] = self.color
-                    
+                    self.piece_array[row][column] = self.color
+          
     def rotate_piece(self):
         """Modify array such that the piece rotates"""
         pass
     
     def draw(self):
         (start_x, start_y) = pygame.mouse.get_pos()
+  
+        for i1, m in enumerate(self.piece_array):
+            for i2, n in enumerate(m):
+                if n != '.':
+                    this_tile = Tile(self.screen, self.tile_size, self.tile_size*i1 + start_x, self.tile_size*i2 + start_y, n)
+                    this_tile.draw_tile()
+                # if n == "w":
+                #     white = pygame.transform.scale(pygame.image.load("white.png")
+                #     self.screen.board_screen.blit(white, (self.tile_size, self.tile_size)), (self.tile_size*i1 + start_x, self.tile_size*i2 + start_y))
+                # elif n == "g":
+                #     green = pygame.transform.scale(pygame.image.load("green.png")
+                #     self.screen.board_screen.blit(green, (self.tile_size, self.tile_size)), (self.tile_size*i1 + start_x, self.tile_size*i2 + start_y))
+                # elif n == "r":
+                #     red = pygame.transform.scale(pygame.image.load("red.png")
+                #     self.screen.board_screen.blit(red, (self.tile_size, self.tile_size)), (self.tile_size*i1 + start_x, self.tile_size*i2 + start_y))
+                # elif n == "y":
+                #     yellow = pygame.transform.scale(pygame.image.load("yellow.png")
+                #     self.screen.board_screen.blit(, (self.tile_size, self.tile_size)), (self.tile_size*i1 + start_x, self.tile_size*i2 + start_y))
+                # elif n == "b":
+                #     blue = p[ygame.transform.scale(pygame.image.load("blue.png")
+                #     self.screen.board_screen.blit(p, (self.tile_size, self.tile_size)), (self.tile_size*i1 + start_x, self.tile_size*i2 + start_y))                                                         
+                else:
+                    continue
+    
+    # def snap_to_board(self):
 
-        for row, m in enumerate(self.tiles):
-            for column, n in enumerate(m):
-                n.draw_tile(self.screen)
