@@ -14,6 +14,7 @@ def start_game(player1, player2, player1color, player2color):
     board = Board(screen)
     # board.draw()
     running = True
+    
     while running:
         board.draw()
         player1.L5.draw()
