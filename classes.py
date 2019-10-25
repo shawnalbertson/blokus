@@ -309,7 +309,24 @@ class Player:
                 Pygame screen object
         """
         # create all of the pieces and assign a used or not used to them
-        self.L5 = Piece(Screen, [["x", "x", "x"], ["x",".","."], ["x",".","."]], self.click_color)
+        self.V5 = Piece(Screen, [["x", "x", "x"], ["x",".","."], ["x",".","."]], self.click_color)
         self.plus = Piece(Screen, [[".", "x", "."], ["x", "x", "x"], [".", "x", "."]], self.click_color)
-        self.N = Piece(Screen, [[".", ".", "x", "x"], ["x", "x", "x", "."]], self.click_color)
-
+        self.L5 = Piece(Screen, [["x", "x", "x", "x"], [".", ".", ".", "x"]], self.click_color)
+        self.Y = Piece(Screen, [["x", "x", "x", "x"], [".", "x", ".", "."]], self.click_color)
+        self.N = Piece(Screen, [["x", "x", "x", "."], [".", ".", "x", "x"]], self.click_color)
+        self.U = Piece(Screen, [["x", ".", "x"], ["x", "x", "x"]], self.click_color)
+        self.P = Piece(Screen, [["x", "x", "."], ["x", "x", "x"]], self.click_color)
+        self.V3 = Piece(Screen, [["x", "."], ["x", "x"]], self.click_color)
+        self.Z5 = Piece(Screen, [["x", "x", "."],[".", "x", "."], [".", "x" "x"]], self.click_color)
+        self.Z4 = Piece(Screen, [["x", "x", "."], [".", "x", "x"]], self.click_color)
+        self.T5 = Piece(Screen, [["x", "x", "x"], [".", "x", "."], [".", "x", "."]], self.click_color)
+        self.S5 = Piece(Screen, ["x", "x", "x", "x", "x"], self.click_color)
+        self.S4 = Piece(Screen, ["x", "x", "x", "x"], self.click_color)
+        self.S3 = Piece(Screen, ["x", "x", "x"], self.click_color)
+        self.S2 = Piece(Screen, ["x", "x"], self.click_color)
+        self.S1 = Piece(Screen, ["x"], self.click_color)
+        self.L4 = Piece(Screen, [["x", ".", ".", "."], ["x", "x", "x", "x"]], self.click_color)
+        self.square = Piece(Screen, [["x", "x"], ["x", "x"]], self.click_color)
+        self.F = Piece(Screen, [[".", "x", "x"],["x", "x", "."], [".", "x", "."]], self.click_color)
+        self.W = Piece(Screen, [["x", ".", "."], ["x", "x", "."], [".", "x", "x"]], self.click_color)
+        self.T4 = Piece(Screen, [["x", "x", "x"], [".", "x", "."]], self.click_color)

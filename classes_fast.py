@@ -165,21 +165,20 @@ class Board:
         self.board_size = self.tile_size * self.rows
         self.tiles = []
 
-        self.board_offset_x = int((self.screen.board_screen_width/2)- (self.board_size/2))
-        self.board_offset_y = int((self.screen.board_screen_height/2)- (self.board_size/2))
+        # self.board_offset_x = int((self.screen.board_screen_width/2)- (self.board_size/2))
+        # self.board_offset_y = int((self.screen.board_screen_height/2)- (self.board_size/2))
 
         # creating the tiles in a loop
         for row in range(0,self.rows):
             self.column = []
             for column in range(0,self.columns):
-                self.tile = Tile(Screen, self.tile_size, row*self.tile_size + self.board_offset_x, column*self.tile_size + self.board_offset_y, 'w')
+                self.tile = Tile(Screen, self.tile_size, row*self.tile_size, column*self.tile_size, 'w')
                 self.column.append(self.tile)
                 self.tile.draw_tile()
                 
             self.tiles.append(self.column)
 
-        self.board_rectangle = pygame.Rect(self.board_offset_x, self.board_offset_y, self.board_size, self.board_size)
-
+        # self.board_rectangle = pygame.Rect(self.board_offset_x, self.board_offset_y, self.board_size, self.board_size)
     def draw(self):
         """
         Draw the board by parsing the list of Tile objects. 

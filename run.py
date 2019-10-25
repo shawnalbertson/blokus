@@ -3,7 +3,7 @@ from pygame.locals import *
 from classes import Screen, Player, Tile, Board, Piece
 
 def start_game(player1, player2, player3, player4, player1color, player2color, player3color, player4color):
-    screen = Screen(1500, 900, 90)
+    screen = Screen(900,900, 90)
     screen.start_board_display()
 
     player1 = Player(player1, player1color)
@@ -22,8 +22,6 @@ def start_game(player1, player2, player3, player4, player1color, player2color, p
     while running:
         board.draw()
         player1.L5.draw()
-        print(pygame.mouse.get_pressed()[0])
-        print(player1.L5.is_used)
         screen.display_update(board.board_rectangle)
         pygame.display.update(board.board_rectangle)       
         for event in pygame.event.get():
