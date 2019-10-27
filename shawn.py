@@ -74,13 +74,16 @@ def place_piece(player, board, piece):
                     mouse_x = int(mouse_x/size)
                     mouse_y = int(mouse_y/size)
 
-# Modify_board does the work of changing the board array                       
-                    board.modify_board(piece, (mouse_x, mouse_y))
+# Modify_board does the work of changing the board array
+                    if board.is_valid(piece, (mouse_x, mouse_y)):                       
+                        board.modify_board(piece, (mouse_x, mouse_y))
+                    else:
+                        place_piece(player, board, piece)
 
                     draw = False
 
                 if event.type == pygame.KEYDOWN:
-                    piece = choose_piece(player, event.key)
+                    piece = player.choose_piece(event.key)
                     place_piece(player, board, piece)
                     draw = False
 

@@ -138,9 +138,20 @@ class Board:
                 else:
                     continue    
     
+    def is_valid(self, modifier, start):
+        """
+            Decide if a move is valid before trying to place it
+        """
+        for row, m in enumerate(modifier.array):
+            for column, n in enumerate(m):
 
+                check = self.array[row + start[1]][column + start[0]]
+                if n != "." and check != "w":
+                    return False
+                
+        return True       
 
-    def modify_board(self, modifier, start, is_valid = 1):
+    def modify_board(self, modifier, start):
         """Rewrite certain chunks of array to a new color
 
         Used to change the big board over time
@@ -156,39 +167,21 @@ class Board:
         This is a good place to check that the piece fits on the board in the first place
         """
         # A list to fill with the tiles that have already been drawn on 
-        current_write = []
 
         for row, m in enumerate(modifier.array):
-            current_write.append([])
-            for column, n in enumerate(m):
-                check = self.array[row + start[1]][column + start[0]]
-                
+
+            for column, n in enumerate(m):                
                 # The case where the piece array is getting drawn to the board array
-                if n != "." and check == "w":
+                if n != ".":
                     self.array[row + start[1]][column + start[0]] = n
-                    current_write[row].append(check)
 
                 # A blank in the piece array
                 elif n == ".":
-                    current_write[row].append(check)
-
-                # The case where a collision is detected
-                elif n != "." and check != "w":
-                    self.reset = Piece(self.screen, self.tiles, current_write, 1)
-                    self.reset_play(self.reset, start)
-                    return
-                    # return modifier
+                    pass
 
 # If the code runs all the way, count the piece as used. Otherwise it remains available
         modifier.available = 0    
 
-    def reset_play(self, modifier, start):
-        """
-            If a play is invalid, this changes the board back to where it would have been before the play
-        """
-        for row, m in enumerate(modifier.array):
-            for column, n in enumerate(m):
-                self.array[row + start[1]][column + start[0]] = n
 
 
 class Piece(Board):
