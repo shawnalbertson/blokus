@@ -1,9 +1,25 @@
+"""
+    This script includes all the functions specific to defining a single user's turn
+    It uses classes defined in model.py
+"""
+
 import pygame
 import time
 
 from model import *
 
 def load(screen_dim, screen_fps, f1, f2, f3, f4, f5):
+    """
+        Runs the tasks that only need to be called once
+        Creates global variables which only exist in this script
+
+        Arguments:
+
+        screen_dim and screen_fps are used as input to initialize Screen object
+
+        f1, f2, f3, f4, f5 are the strings of the file names associated with tile images
+    """
+
     global screen
     global size
     global white
@@ -32,7 +48,13 @@ def load(screen_dim, screen_fps, f1, f2, f3, f4, f5):
     board = Board(screen.board_screen, tiles, "board", False)
 
 def place_piece(player, board, piece):
+    """
+        This function checks to see if a player's piece is available
 
+        If it is, it draws the piece and waits for the input that would allow it to modify the board
+
+        If not, it waits for a valid piece
+    """
     if piece.available:
         draw = True
 
@@ -45,7 +67,6 @@ def place_piece(player, board, piece):
                 if event.type == pygame.QUIT:
                     pygame.quit()
 
-
                 if pygame.mouse.get_pressed()[0]:
                     # snap to the integer position
                     mouse_x, mouse_y = event.pos
@@ -56,6 +77,11 @@ def place_piece(player, board, piece):
                     board.modify_board(piece, (mouse_x, mouse_y)) 
                     draw = False
 
+                if event.type == pygame.KEYDOWN:
+                    piece = choose_piece(player, event.key)
+                    place_piece(player, board, piece)
+                    draw = False
+
                 pygame.display.flip()
 
     else:
@@ -63,9 +89,58 @@ def place_piece(player, board, piece):
         print("You already played this piece!")
         your_turn(player, board)
     
+def choose_piece(player, event_key):
+    if event_key == pygame.K_q:
+        return player.V5
+    elif event_key == pygame.K_w:
+        return player.V3
+    elif event_key == pygame.K_e:
+        return player.X    
+    elif event_key == pygame.K_r:
+        return player.N 
+    elif event_key == pygame.K_t:
+        return player.L5
+    elif event_key == pygame.K_i:
+        return player.L4
+    elif event_key == pygame.K_y:
+        return player.Y
+    elif event_key == pygame.K_u:
+        return player.U
+    elif event_key == pygame.K_p:
+        return player.P
+    elif event_key == pygame.K_o:
+        return player.W
+    elif event_key == pygame.K_f:
+        return player.F
+    elif event_key == pygame.K_s:
+        return player.T5
+    elif event_key == pygame.K_d:
+        return player.T4
+    elif event_key == pygame.K_a:
+        return player.Z5
+    elif event_key == pygame.K_g:
+        return player.Z4
+    elif event_key == pygame.K_h:
+        return player.S5
+    elif event_key == pygame.K_j:
+        return player.S4
+    elif event_key == pygame.K_k:
+        return player.S3
+    elif event_key == pygame.K_l:
+        return player.S2
+    elif event_key == pygame.K_z:
+        return player.S1
+    elif event_key == pygame.K_x:
+        return player.square
 
 
 def your_turn(player, board):
+    """
+        Takes a player and a board, waits for keyboard input
+        Uses choose_piece to associate a click with a piece
+        Uses place_piece to put a piece on the board
+    """
+
     # Establish a running status called 'running'
     running = True
     while running:
@@ -82,133 +157,10 @@ def your_turn(player, board):
     # Once keyboard input is detected, enter a new part of the code with running status called 'draw'
             if event.type == pygame.KEYDOWN:
 
-                if event.key == pygame.K_q:
-                    piece = player.V5
-                    place_piece(player, board, piece)
-                    piece.available = 0
-                    running = False
-
-                if event.key == pygame.K_w:
-                    piece = player.V3
-                    place_piece(player, board, piece)
-                    piece.available = 0
-                    running = False
-
-                if event.key == pygame.K_e:
-                    piece = player.X
-                    place_piece(player, board, piece)
-                    piece.available = 0
-                    running = False
-                
-                if event.key == pygame.K_r:
-                    piece = player.N
-                    place_piece(player, board, piece)
-                    piece.available = 0
-                    running = False
-
-                if event.key == pygame.K_t:
-                    piece = player.L5
-                    place_piece(player, board, piece)
-                    piece.available = 0
-                    running = False
-                                    
-                if event.key == pygame.K_i:
-                    piece = player.L4                    
-                    place_piece(player, board, piece)
-                    piece.available = 0
-                    running = False
-
-                if event.key == pygame.K_y:
-                    piece = player.Y
-                    place_piece(player, board, piece)
-                    piece.available = 0
-                    running = False
-
-                if event.key == pygame.K_u:
-                    piece = player.U
-                    place_piece(player, board, piece)
-                    piece.available = 0
-                    running = False
-
-                if event.key == pygame.K_p:
-                    piece = player.P
-                    place_piece(player, board, piece)
-                    piece.available = 0
-                    running = False
-
-                if event.key == pygame.K_o:
-                    piece = player.W         
-                    place_piece(player, board, piece)
-                    piece.available = 0
-                    running = False
-
-                if event.key == pygame.K_f:
-                    piece = player.F                               
-                    place_piece(player, board, piece)
-                    piece.available = 0
-                    running = False
-
-                if event.key == pygame.K_s:
-                    piece = player.T5
-                    place_piece(player, board, piece)
-                    piece.available = 0
-                    running = False
-
-                if event.key == pygame.K_d:
-                    piece = player.T4
-                    place_piece(player, board, piece)
-                    piece.available = 0
-                    running = False
-
-                if event.key == pygame.K_a:
-                    piece = player.Z5
-                    place_piece(player, board, piece)
-                    piece.available = 0
-                    running = False
-
-                if event.key == pygame.K_g:
-                    piece = player.Z4
-                    place_piece(player, board, piece)
-                    piece.available = 0
-                    running = False
-
-                if event.key == pygame.K_h:
-                    piece = player.S5
-                    place_piece(player, board, piece)
-                    piece.available = 0
-                    running = False
-
-                if event.key == pygame.K_j:
-                    piece = player.S4
-                    place_piece(player, board, piece)
-                    piece.available = 0
-                    running = False
-
-                if event.key == pygame.K_k:
-                    piece = player.S3
-                    place_piece(player, board, piece)
-                    piece.available = 0
-                    running = False
-
-                if event.key == pygame.K_l:
-                    piece = player.S2                                                                    
-                    place_piece(player, board, piece)
-                    piece.available = 0
-                    running = False
-
-                if event.key == pygame.K_z:
-                    piece = player.S1
-                    place_piece(player, board, piece)
-                    piece.available = 0
-                    running = False
-
-                if event.key == pygame.K_x:
-                    piece = player.square
-                    place_piece(player, board, piece)
-                    piece.available = 0
-                    running = False
-
-
+                piece = choose_piece(player, event.key)
+                place_piece(player, board, piece)
+                # piece.available = 0
+                running = False
 
 def play(p1, p2, p3, p4, p1color, p2color, p3color, p4color):
     """
@@ -249,6 +201,7 @@ def play(p1, p2, p3, p4, p1color, p2color, p3color, p4color):
             your_turn(p4, board)    
             turn_counter = 0
 
+ 
 load(600, 60, "white.png", "green.png", "red.png", "yellow.png", "blue.png")
 
 play("shawn", "navi", "ben", "hill", "blue", "green", "red", "yellow")

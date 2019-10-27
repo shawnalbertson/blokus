@@ -156,7 +156,7 @@ class Board:
         This is a good place to check that the piece fits on the board in the first place
         """
         # A list to fill with the tiles that have already been drawn on 
-        current_write= []
+        current_write = []
 
         for row, m in enumerate(modifier.array):
             current_write.append([])
@@ -166,7 +166,6 @@ class Board:
                 # The case where the piece array is getting drawn to the board array
                 if n != "." and check == "w":
                     self.array[row + start[1]][column + start[0]] = n
-
                     current_write[row].append(check)
 
                 # A blank in the piece array
@@ -178,6 +177,9 @@ class Board:
                     self.reset = Piece(self.screen, self.tiles, current_write, 1)
                     self.reset_play(self.reset, start)
                     return
+
+# If the code runs all the way, count the piece as used. Otherwise it remains available
+        modifier.available = 0    
 
     def reset_play(self, modifier, start):
         """
