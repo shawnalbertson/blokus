@@ -47,6 +47,7 @@ def load(screen_dim, screen_fps, f1, f2, f3, f4, f5):
 
     board = Board(screen.board_screen, tiles, "board", False)
 
+
 def place_piece(player, board, piece):
     """
         This function checks to see if a player's piece is available
@@ -74,7 +75,8 @@ def place_piece(player, board, piece):
                     mouse_y = int(mouse_y/size)
 
 # Modify_board does the work of changing the board array                       
-                    board.modify_board(piece, (mouse_x, mouse_y)) 
+                    board.modify_board(piece, (mouse_x, mouse_y))
+
                     draw = False
 
                 if event.type == pygame.KEYDOWN:
@@ -88,51 +90,6 @@ def place_piece(player, board, piece):
 # If the piece has been played, call your_turn again so you don't go on the next player yet
         print("You already played this piece!")
         your_turn(player, board)
-    
-def choose_piece(player, event_key):
-    if event_key == pygame.K_q:
-        return player.V5
-    elif event_key == pygame.K_w:
-        return player.V3
-    elif event_key == pygame.K_e:
-        return player.X    
-    elif event_key == pygame.K_r:
-        return player.N 
-    elif event_key == pygame.K_t:
-        return player.L5
-    elif event_key == pygame.K_i:
-        return player.L4
-    elif event_key == pygame.K_y:
-        return player.Y
-    elif event_key == pygame.K_u:
-        return player.U
-    elif event_key == pygame.K_p:
-        return player.P
-    elif event_key == pygame.K_o:
-        return player.W
-    elif event_key == pygame.K_f:
-        return player.F
-    elif event_key == pygame.K_s:
-        return player.T5
-    elif event_key == pygame.K_d:
-        return player.T4
-    elif event_key == pygame.K_a:
-        return player.Z5
-    elif event_key == pygame.K_g:
-        return player.Z4
-    elif event_key == pygame.K_h:
-        return player.S5
-    elif event_key == pygame.K_j:
-        return player.S4
-    elif event_key == pygame.K_k:
-        return player.S3
-    elif event_key == pygame.K_l:
-        return player.S2
-    elif event_key == pygame.K_z:
-        return player.S1
-    elif event_key == pygame.K_x:
-        return player.square
-
 
 def your_turn(player, board):
     """
@@ -157,7 +114,9 @@ def your_turn(player, board):
     # Once keyboard input is detected, enter a new part of the code with running status called 'draw'
             if event.type == pygame.KEYDOWN:
 
-                piece = choose_piece(player, event.key)
+                # piece = choose_piece(player, event.key)
+                piece = player.choose_piece(event.key)
+
                 place_piece(player, board, piece)
                 # piece.available = 0
                 running = False

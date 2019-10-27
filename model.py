@@ -140,7 +140,7 @@ class Board:
     
 
 
-    def modify_board(self, modifier, start):
+    def modify_board(self, modifier, start, is_valid = 1):
         """Rewrite certain chunks of array to a new color
 
         Used to change the big board over time
@@ -177,6 +177,7 @@ class Board:
                     self.reset = Piece(self.screen, self.tiles, current_write, 1)
                     self.reset_play(self.reset, start)
                     return
+                    # return modifier
 
 # If the code runs all the way, count the piece as used. Otherwise it remains available
         modifier.available = 0    
@@ -312,3 +313,47 @@ class Player:
         self.square = Piece(Screen, Tiles, [["x", "x"], ["x", "x"]], self.available)
         self.square.assign_color(self.click_color)
         
+    def choose_piece(self, event_key):
+        if event_key == pygame.K_q:
+            return self.V5
+        elif event_key == pygame.K_w:
+            return self.V3
+        elif event_key == pygame.K_e:
+            return self.X    
+        elif event_key == pygame.K_r:
+            return self.N 
+        elif event_key == pygame.K_t:
+            return self.L5
+        elif event_key == pygame.K_i:
+            return self.L4
+        elif event_key == pygame.K_y:
+            return self.Y
+        elif event_key == pygame.K_u:
+            return self.U
+        elif event_key == pygame.K_p:
+            return self.P
+        elif event_key == pygame.K_o:
+            return self.W
+        elif event_key == pygame.K_f:
+            return self.F
+        elif event_key == pygame.K_s:
+            return self.T5
+        elif event_key == pygame.K_d:
+            return self.T4
+        elif event_key == pygame.K_a:
+            return self.Z5
+        elif event_key == pygame.K_g:
+            return self.Z4
+        elif event_key == pygame.K_h:
+            return self.S5
+        elif event_key == pygame.K_j:
+            return self.S4
+        elif event_key == pygame.K_k:
+            return self.S3
+        elif event_key == pygame.K_l:
+            return self.S2
+        elif event_key == pygame.K_z:
+            return self.S1
+        elif event_key == pygame.K_x:
+            return self.square
+
