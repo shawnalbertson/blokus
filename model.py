@@ -2,14 +2,14 @@ import pygame
 
 # Functions to load images
 def piece_size(board_size, n):
-    """Take board dimension and number of desired pieces per board
+    """
+    
+    Take board dimension and number of desired pieces per board
     Return the length of one edge of a tile as int type for pygame.transform.scale
 
     A regular Blokus board is 20x20
     """
-    # if a tuple:
-    # return int(min(board_size)/n)
-    # if a single number
+
     return int(board_size/n)
 
 
@@ -51,10 +51,10 @@ class Screen:
         self.clock.tick(self.fps)
 
 class Tile:
-    """Includes color and size of tiles
-    Reads image_file and makes it a scaled surface object
-    Takes size found in main script
-    Takes color_code for referring to different kinds of tiles
+    """
+        Includes color and size of tiles
+        Reads image_file and makes it a scaled surface object
+        Takes color_code for referring to different kinds of tiles
     """
 
     def __init__(self, image_file, size, color_code):
@@ -65,8 +65,9 @@ class Tile:
     
 
 class Tiles:
-    """A more convenient way to store multiple tile objects that share information
-    pass in order white, green, red, yellow, blue
+    """
+        A more convenient way to store multiple tile objects that share information
+        Pass in order white, green, red, yellow, blue
     """
     def __init__(self, tile1, tile2, tile3, tile4, tile5):
         self.tile1 = tile1
@@ -77,15 +78,16 @@ class Tiles:
         self.size = tile1.size
 
 class Board:
-    """ The object that contains all tile information
+    """
+        The object that contains all tile information
 
-    Screen is a pygame surface object
+        Screen is a pygame surface object
 
-    Tiles is an object with a few pre loaded tile images
+        Tiles is an object with a few pre loaded tile images
 
-    Array holds information about the colors of the board at the moment
+        Array holds information about the colors of the board at the moment
 
-    get_mouse determines if the image will follow your mouse or not
+        get_mouse determines if the image will follow your mouse or not
     """
 
     def __init__(self, screen, tiles, array, get_mouse = True):
@@ -94,13 +96,14 @@ class Board:
         self.size = tiles.size
         self.tiles = tiles
 
-        # Make color images
+        # Define the five tile objects
         self.white = tiles.tile1.image
         self.green = tiles.tile2.image
         self.red = tiles.tile3.image
         self.yellow = tiles.tile4.image
         self.blue = tiles.tile5.image
 
+    # If the input array is the string "board", draw the board array of 20x20 with white tiles
         if array == "board":
             board = []
             row = []
@@ -116,15 +119,19 @@ class Board:
         self.get_mouse = get_mouse
 
     def draw(self):
-        """Draw a piece or a board to screen object
-        Don't draw anything that's not w, g, r, y or b
+        """
+            Draw a piece or a board to screen object
+            Don't draw anything that's not w, g, r, y or b
         """
         if self.get_mouse:
             (start_x, start_y) = pygame.mouse.get_pos()
         else:
             (start_x, start_y) = (0,0)
+        
+        # Go through every element in the array
         for i1, m in enumerate(self.array):
             for i2, n in enumerate(m):
+
                 if n == "w":
                     self.screen.blit(self.white, (self.size*i2 + start_x, self.size*i1 + start_y))
                 elif n == "g":
@@ -141,51 +148,60 @@ class Board:
     def is_valid(self, modifier, start):
         """
             Decide if a move is valid before trying to place it
+            Arguments:
+                modifier : A piece object
+                start : Tuple of mouse location as mapped to the 20x20 game board
         """
+    # Go through each element in the array that defines modifier
         for row, m in enumerate(modifier.array):
             for column, n in enumerate(m):
+    
+    # Compare each board element with each piece element
+                try:
+                    check = self.array[row + start[1]][column + start[0]]
 
-                check = self.array[row + start[1]][column + start[0]]
-                if n != "." and check != "w":
+    # If the board element would overlap with an already filled board tile, return False               
+                    if n != "." and check != "w":
+                        return False
+
+    # If the piece is out of range, return false rather than crash the program
+                except IndexError:
                     return False
-                
+
+    # If the piece is within range and doesn't overlap an existing piece, is_valid returns True
         return True       
 
     def modify_board(self, modifier, start):
-        """Rewrite certain chunks of array to a new color
-
-        Used to change the big board over time
-
-        modifier is another Board object that should relate to a piece
-            contains colors
-        
-        start is a tuple relating to the current mouse location
-            a.k.a where the piece is going to be dropped
-
-        This is where snapping will come into play, because the mouse should get moved to a particular location for placing the piece
-
-        This is a good place to check that the piece fits on the board in the first place
         """
-        # A list to fill with the tiles that have already been drawn on 
+            Change specific parts of board array to a new color
+            Only called once the move has been checked for validity
 
+            Arguments:
+                modifier : Piece object
+                start : Tuple of mouse location as mapped to the 20x20 game board
+        """
+    # Go through each element in the array that defines modifier
         for row, m in enumerate(modifier.array):
+            for column, n in enumerate(m):
 
-            for column, n in enumerate(m):                
-                # The case where the piece array is getting drawn to the board array
+    # Alter the board array if array element n is a color
                 if n != ".":
                     self.array[row + start[1]][column + start[0]] = n
 
-                # A blank in the piece array
+    # Don't alter the board array if array element n is a blank
                 elif n == ".":
                     pass
 
-# If the code runs all the way, count the piece as used. Otherwise it remains available
+    # Once the code runs, the piece is made unavailable
         modifier.available = 0    
 
 
 
 class Piece(Board):
-
+    """
+        The Piece class is very similar to Board because it is a compilation of tiles defined by an array
+        It also has a condition that determines if the piece has already been played
+    """
     def __init__(self, screen, tiles, array, available, get_mouse = True):
         super().__init__(screen, tiles, array, get_mouse)
         self.available = available
@@ -195,29 +211,37 @@ class Piece(Board):
         pass
 
     def assign_color(self, color):
-        """Take in a general array representing a piece
-        Assign the general fill with the newly definied fill
+        """
+            Take in an array representing the shape of a piece
+            Change the generic 'x' fill to one specific to a color
         """
 
-        #THIS IS CORRECT FOR COLOR ASSIGNMENT
+    # Go through each element in the array
         for row, m in enumerate(self.array):
             for column, n in enumerate(m):
+    
+    # If the entry is not blank, change the color
                 if not n == ".":
                     self.array[row][column] = color
     
 
 
 class Player:
+    """
+    Initialize the player with what color their pieces should be and what their name is.
+
+    Arguments:
+        player_name : string
+            Name of the player
+
+        player_color : string
+            Color that the pieces of the player are going to be
+    """
+
+
     def __init__(self, player_name, player_color):
         """
-        Initialize the player with what color their pieces should be and what their name is.
-
-        Arguments:
-            player_name : string
-                Name of the player
-
-            player_color : string
-                Color that the pieces of the player are going to be
+            Defines player.click_color
         """
 
         self.player_name = player_name
@@ -235,10 +259,17 @@ class Player:
     def initialize_pieces(self, Screen, Tiles, available = 1):
         """
         Initializes all pieces objects for a player.
+        Makes a Piece object with array input, redefines the color with Piece.assign_color
         
         Arguments:
             Screen : Pygame object
                 Pygame screen object
+
+            Tiles : A class containing all the tiles
+
+            available : The condition of whether or not the piece has been played
+                1 when not yet played
+                0 once played
         """
         self.available = available
 
@@ -307,6 +338,14 @@ class Player:
         self.square.assign_color(self.click_color)
         
     def choose_piece(self, event_key):
+        """
+            Associates each piece with a keyboard stroke
+            Returns false if the input does not associate with any piece
+
+            Arguments:
+                event_key : pygame result specifically from a pygame.KEYDOWN event
+        """
+
         if event_key == pygame.K_q:
             return self.V5
         elif event_key == pygame.K_w:
@@ -349,4 +388,6 @@ class Player:
             return self.S1
         elif event_key == pygame.K_x:
             return self.square
+        else:
+            return False
 
