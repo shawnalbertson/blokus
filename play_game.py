@@ -56,13 +56,7 @@ def load(screen_dim, screen_fps, f1, f2, f3, f4, f5, f6):
 
 def one_status(input, coords, screen):
     """
-        Creates font object with varying background fill depending on condition
-        Draws text to a screen at specified location
 
-        Arguments: 
-            input : a text sample
-            coords : 2 tuple representing center of text image
-            screen : Screen class
     """
     font = pygame.font.Font('Helvetica.ttf', 16) 
     if input == "Available":
@@ -76,13 +70,6 @@ def one_status(input, coords, screen):
 
 
 def draw_status(player, screen):
-    """
-        Goes through the status of each piece in player's inventory
-        Calls one_status to draw status to specific locations
-        Arguments:
-            player : Player class
-            screen : Screen class
-    """
     status_list = player.get_played_status()
 
     one_status(status_list[0], (110, 110), screen)
