@@ -91,6 +91,7 @@ def place_piece(event_key, player, board, screen):
 
     # Only run this if piece.available is True
     # piece.available is instantiated at 1 at the time of creating pieces
+        print('checking')
         if piece.available:
 
         # Draw status is True to start
@@ -100,13 +101,19 @@ def place_piece(event_key, player, board, screen):
             while draw:
                 board.draw()
                 piece.draw()
-
-        # Now go through the logic of detecting a click and placing the piece accordingly
+                # Now go through the logic of detecting a click and placing the piece accordingly
                 for event in pygame.event.get():
+                    if event.type == pygame.KEYDOWN:
+                            if event.key == pygame.K_LEFT:
+                                piece.rotate_piece()
+                                print(piece.array)
+                                piece.draw()
+        
         
         # Close the game whenever the x is hit
                     if event.type == pygame.QUIT:
                         pygame.quit()
+
         
         # Detect a mouse click event, snap mouse location to nearest integer
                     if pygame.mouse.get_pressed()[0]:
@@ -126,7 +133,7 @@ def place_piece(event_key, player, board, screen):
                             place_piece(event.key, player, board, screen)
 
         # Once the piece is placed, change draw condition to False
-                        draw = False
+                            # draw = False
 
         # Another possible event is for another key to get clicked
         # If so, choose a new piece with player.choose_piece
@@ -136,7 +143,7 @@ def place_piece(event_key, player, board, screen):
                         place_piece(event.key, player, board, screen)
 
         # Once the piece is placed, change draw condition to False
-                        draw = False
+                        # draw = False
 
         # Update the display after going through to check the conditions of the piece
                     pygame.display.flip()
