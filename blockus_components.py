@@ -446,31 +446,15 @@ class Player:
 
     def get_played_status(self):
         """
-            Availabilies
+            Goes through all of a player's pieces and checks to see if that piece is available
         """
+        pieces = [self.S1, self.S2, self.V3, self.S3, self.square, self.T4, self.S4, 
+                        self.L4, self.Z4, self.L5, self.T5, self.V5, self.N, self.Z5, 
+                        self.S5, self.P, self.W, self.U, self.F, self.X, self.Y]
         blank_list = []
-
-        blank_list = self.print_available(blank_list, self.S1)
-        blank_list = self.print_available(blank_list, self.S2)
-        blank_list = self.print_available(blank_list, self.V3)
-        blank_list = self.print_available(blank_list, self.S3)
-        blank_list = self.print_available(blank_list, self.square)
-        blank_list = self.print_available(blank_list, self.T4)
-        blank_list = self.print_available(blank_list, self.S4)
-        blank_list = self.print_available(blank_list, self.L4)
-        blank_list = self.print_available(blank_list, self.Z4)
-        blank_list = self.print_available(blank_list, self.L5)
-        blank_list = self.print_available(blank_list, self.T5)
-        blank_list = self.print_available(blank_list, self.V5)
-        blank_list = self.print_available(blank_list, self.N)
-        blank_list = self.print_available(blank_list, self.Z5)
-        blank_list = self.print_available(blank_list, self.S5)
-        blank_list = self.print_available(blank_list, self.P)
-        blank_list = self.print_available(blank_list, self.W)
-        blank_list = self.print_available(blank_list, self.U)
-        blank_list = self.print_available(blank_list, self.F)
-        blank_list = self.print_available(blank_list, self.X)
-        blank_list = self.print_available(blank_list, self.Y)
+        
+        for piece in pieces:
+            blank_list = self.print_available(blank_list, piece)
 
         return blank_list
         
