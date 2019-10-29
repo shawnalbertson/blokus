@@ -148,10 +148,13 @@ def place_piece(event_key, player, board, screen):
                     if event.type == pygame.QUIT:
                         pygame.quit()
 
+        # Rotate the piece if there's a left input
                     if event.type == pygame.KEYDOWN:
                         if event.key == pygame.K_LEFT:
                             piece.array = piece.rotate_piece()
                             continue
+
+        # Flip the piece if there's a right input
                         if event.key == pygame.K_RIGHT:
                             piece.array = piece.flip_piece()
                             continue
