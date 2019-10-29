@@ -213,35 +213,13 @@ class Piece(Board):
 
     def rotate_piece(self):
         """Modify array such that the piece rotates."""
-        # height_initial_array = len(self.array)
-        # width_initial_array = len(self.array[0])
-
-        # width_rotated = height_initial_array
-        # height_rotated = width_initial_array
-
-        # rotated_row = []
-        # for item in range(0, width_rotated):
-        #     rotated_row.append('.')
-
-        # rotated_array = [rotated_row for i in range(height_rotated)]
-
         rotated_array = np.rot90(self.array, k=3) 
-        # print(rotated_array)
+        print(type(rotated_array))
         # newgrid = []
         # for i in range(len(self.array[0])): #assuming they all have the same length
         #     newgrid.append([x[i] for x in self.array])
-        # print(newgrid)
-        # for row in range(0,len(self.array)):
-        #     for column in reversed(range(0,len(self.array[0]))):
-        #         print(height_rotated-column, row)
-        #         print(rotated_array[height])
-        #         rotated_row = 
-        #         rotated_array[height_rotated - column][row] = self.array[row][column]
-        #         print('filling one more out')
-        #         print(rotated_array)
-        #     rotated_array.extend(this_row)
-        
         self.array = rotated_array
+
     def assign_color(self, color):
         """
             Take in an array representing the shape of a piece

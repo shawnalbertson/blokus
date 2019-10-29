@@ -127,12 +127,12 @@ def place_piece(event_key, player, board, screen):
     
     else:
         piece = player.choose_piece(event_key)
-
+        # print(type(piece))
     # Only run this if piece.available is True
     # piece.available is instantiated at 1 at the time of creating pieces
-        print('checking')
-        if piece.available:
-
+        available = piece.available
+        print(available)
+        if available == 1:
         # Draw status is True to start
             draw = True
 
@@ -143,9 +143,8 @@ def place_piece(event_key, player, board, screen):
                 # Now go through the logic of detecting a click and placing the piece accordingly
                 for event in pygame.event.get():
                     if event.type == pygame.KEYDOWN:
-                            if event.key == pygame.K_LEFT:
+                            if event.key == pygame.K_m:
                                 piece.rotate_piece()
-                                print(piece.array)
                                 piece.draw()
         
         
@@ -187,9 +186,10 @@ def place_piece(event_key, player, board, screen):
 
         # Update the display after going through to check the conditions of the piece
                     pygame.display.flip()
+                    print(piece.available)
 
         # If the piece has been played, call your_turn again so you don't go on the next player yet
-        else:
+        if available == 0:
             print("You already played this piece!")
             your_turn(player, board, screen)
 
