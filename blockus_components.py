@@ -217,13 +217,14 @@ class Piece(Board):
         """
 
         return np.rot90(self.array, k = 3)
-        # rotated_array = np.rot90(self.array, k = 3)
-        # self.array = rotated_array
 
-        # print(type(rotated_array))
-        # newgrid = []
-        # for i in range(len(self.array[0])): #assuming they all have the same length
-        #     newgrid.append([x[i] for x in self.array])
+
+    def flip_piece(self):
+        """
+        returns a flipped piece array
+        """
+        
+        return np.flip(self.array, 0)
 
     def assign_color(self, color):
         """

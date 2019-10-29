@@ -148,12 +148,15 @@ def place_piece(event_key, player, board, screen):
                     if event.type == pygame.QUIT:
                         pygame.quit()
 
-                    # if event.type == pygame.KEYDOWN:
-                    #     if event.key == pygame.K_m:
-                    #         new_array = piece.rotate_piece()
-                            
-                    #         place_piece(event.key, player, board, screen)
-                    #         draw = False
+                    if event.type == pygame.KEYDOWN:
+                        if event.key == pygame.K_LEFT:
+                            piece.array = piece.rotate_piece()
+                            continue
+                        if event.key == pygame.K_RIGHT:
+                            piece.array = piece.flip_piece()
+                            continue
+
+
 
         # Detect a mouse click event, snap mouse location to nearest integer
                     if pygame.mouse.get_pressed()[0]:
