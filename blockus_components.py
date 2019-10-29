@@ -211,8 +211,23 @@ class Piece(Board):
         self.available = available
 
     def rotate_piece(self):
-        """Modify array such that the piece rotates"""
-        pass
+        """Modify array such that the piece rotates."""
+        height_initial_array = len(self.array)
+        width_initial_array = len(self.array[0])
+
+        width_rotated = height_initial_array
+        height_rotated = width_initial_array
+
+        rotated_row = []
+        for item in range(0, width_rotated):
+            rotated_row.append('.')
+        
+        rotated_array = [rotated_row for i in range(width_rotated)]
+        for y in range(len(0,self.array)):
+            for x in range(0,len(self.array[0])):
+                rotated_array[width_rotated-x][y] = self.array[y][x]
+        
+        self.array = rotated_array
 
     def assign_color(self, color):
         """
