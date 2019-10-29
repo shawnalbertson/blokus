@@ -448,8 +448,43 @@ class Player:
         else:
             return False
 
-    # def get_availabilities(self):
-    #     """
-    #         Get a list of piece keys and availabilies
-    #     """
+
+    def print_available(self, open_list, piece):
+        if piece.available:
+            open_list.append("Available")
+        else:
+            open_list.append("Played")
+        return open_list
+
+
+    def get_played_status(self):
+        """
+            Availabilies
+        """
+        blank_list = []
+
+        blank_list = self.print_available(blank_list, self.S1)
+        blank_list = self.print_available(blank_list, self.S2)
+        blank_list = self.print_available(blank_list, self.V3)
+        blank_list = self.print_available(blank_list, self.S3)
+        blank_list = self.print_available(blank_list, self.square)
+        blank_list = self.print_available(blank_list, self.T4)
+        blank_list = self.print_available(blank_list, self.S4)
+        blank_list = self.print_available(blank_list, self.L4)
+        blank_list = self.print_available(blank_list, self.Z4)
+        blank_list = self.print_available(blank_list, self.L5)
+        blank_list = self.print_available(blank_list, self.T5)
+        blank_list = self.print_available(blank_list, self.V5)
+        blank_list = self.print_available(blank_list, self.N)
+        blank_list = self.print_available(blank_list, self.Z5)
+        blank_list = self.print_available(blank_list, self.S5)
+        blank_list = self.print_available(blank_list, self.P)
+        blank_list = self.print_available(blank_list, self.W)
+        blank_list = self.print_available(blank_list, self.U)
+        blank_list = self.print_available(blank_list, self.F)
+        blank_list = self.print_available(blank_list, self.X)
+        blank_list = self.print_available(blank_list, self.Y)
+
+        return blank_list
         
+

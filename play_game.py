@@ -54,6 +54,45 @@ def load(screen_dim, screen_fps, f1, f2, f3, f4, f5, f6):
     # The array input -> "board" is a special case that creates a 20x20 'w' array
     board = Board(screen.board_screen, tiles, "board", False)
 
+def one_status(input, coords, screen):
+    """
+
+    """
+    font = pygame.font.Font('Helvetica.ttf', 16) 
+    if input == "Available":
+        text = font.render(input, True, (0,0,0), (0, 255, 0))
+    else:
+        text = font.render(input, True, (0,0,0), (255, 0, 0))
+
+    textRect = text.get_rect()  
+    textRect.center = coords
+    screen.board_screen.blit(text, textRect)
+
+
+def draw_status(player, screen):
+    status_list = player.get_played_status()
+
+    one_status(status_list[0], (110, 110), screen)
+    one_status(status_list[1], (220, 110), screen)
+    one_status(status_list[2], (335, 110), screen)
+    one_status(status_list[3], (465, 110), screen)
+    one_status(status_list[4], (50, 235), screen)
+    one_status(status_list[5], (160, 235), screen)
+    one_status(status_list[6], (290, 235), screen)
+    one_status(status_list[7], (425, 235), screen)
+    one_status(status_list[8], (540, 235), screen)
+    one_status(status_list[9], (70, 415), screen)
+    one_status(status_list[10], (180, 415), screen)
+    one_status(status_list[11], (275, 415), screen)
+    one_status(status_list[12], (380, 415), screen)
+    one_status(status_list[13], (480, 415), screen)
+    one_status(status_list[14], (560, 415), screen)
+    one_status(status_list[15], (50, 585), screen)
+    one_status(status_list[16], (130, 585), screen)
+    one_status(status_list[17], (220, 585), screen)
+    one_status(status_list[18], (320, 585), screen)
+    one_status(status_list[19], (420, 585), screen)
+    one_status(status_list[20], (530, 585), screen)
 
 def place_piece(event_key, player, board, screen):
     """
@@ -63,7 +102,6 @@ def place_piece(event_key, player, board, screen):
 
         If not, it waits for a valid piece
     """
-    
 
     if event_key == pygame.K_c:
 
@@ -71,9 +109,10 @@ def place_piece(event_key, player, board, screen):
         draw = True
         while draw:
             piece.draw()
-
+            
             every_piece_image = pygame.transform.scale(pygame.image.load("all_tiles.png"), (550, 550))
             screen.board_screen.blit(every_piece_image, (25, 25))
+            draw_status(player, screen)
             pygame.display.flip()
 
             for event in pygame.event.get():
@@ -130,7 +169,8 @@ def place_piece(event_key, player, board, screen):
         # If the move is not valid, call place_piece again with the inputs from your_turn
         # Effectively, an invalid move restarts the move choice process and nothing happens
                         else:
-                            place_piece(event.key, player, board, screen)
+                            place_piece(event_key, player, board, screen)
+                            # your_turn(player, board, screen)
 
         # Once the piece is placed, change draw condition to False
                             # draw = False
