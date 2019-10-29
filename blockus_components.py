@@ -211,20 +211,22 @@ class Piece(Board):
         super().__init__(screen, tiles, array, get_mouse)
         self.available = available
 
-    def rotate_piece(self):
-        """Modify array such that the piece rotates.
-        returns the rotated array        
-        """
+    def check_alterations(self, event_key):
+        if event_key == pygame.K_LEFT:
+            self.array = np.rot90(self.array, k = 1)
+            # continue
+    
+        if event_key == pygame.K_RIGHT:
+            self.array = np.rot90(self.array, k = 3)
+            # continue
 
-        return np.rot90(self.array, k = 3)
+        if event_key == pygame.K_UP:
+            self.array = np.flip(self.array, 1)
+            # continue
 
-
-    def flip_piece(self):
-        """
-        returns a flipped piece array
-        """
-        
-        return np.flip(self.array, 0)
+        if event_key == pygame.K_DOWN:
+            self.array = np.flip(self.array, 0)
+            # continue        
 
     def assign_color(self, color):
         """

@@ -148,19 +148,6 @@ def place_piece(event_key, player, board, screen):
                     if event.type == pygame.QUIT:
                         pygame.quit()
 
-        # Rotate the piece if there's a left input
-                    if event.type == pygame.KEYDOWN:
-                        if event.key == pygame.K_LEFT:
-                            piece.array = piece.rotate_piece()
-                            continue
-
-        # Flip the piece if there's a right input
-                        if event.key == pygame.K_RIGHT:
-                            piece.array = piece.flip_piece()
-                            continue
-
-
-
         # Detect a mouse click event, snap mouse location to nearest integer
                     if pygame.mouse.get_pressed()[0]:
                         mouse_x, mouse_y = event.pos
@@ -186,7 +173,12 @@ def place_piece(event_key, player, board, screen):
         # If so, choose a new piece with player.choose_piece
         # Call place_piece with the new piece input
                     if event.type == pygame.KEYDOWN:
-                        # piece = player.choose_piece(event.key)
+
+        # Rotate the piece if input is one of the arrow keys
+                        if event.key == pygame.K_LEFT or event.key == pygame.K_RIGHT or event.key == pygame.K_UP or event.key == pygame.K_DOWN:
+                            piece.check_alterations(event.key)
+                            continue
+
                         place_piece(event.key, player, board, screen)
 
         # Once the piece is placed, change draw condition to False
