@@ -69,12 +69,13 @@ class Tiles:
         A more convenient way to store multiple tile objects that share information
         Pass in order white, green, red, yellow, blue
     """
-    def __init__(self, tile1, tile2, tile3, tile4, tile5):
+    def __init__(self, tile1, tile2, tile3, tile4, tile5, tile6):
         self.tile1 = tile1
         self.tile2 = tile2
         self.tile3 = tile3
         self.tile4 = tile4
         self.tile5 = tile5
+        self.tile6 = tile6
         self.size = tile1.size
 
 class Board:
@@ -102,6 +103,7 @@ class Board:
         self.red = tiles.tile3.image
         self.yellow = tiles.tile4.image
         self.blue = tiles.tile5.image
+        self.gray = tiles.tile6.image
 
     # If the input array is the string "board", draw the board array of 20x20 with white tiles
         if array == "board":
@@ -141,7 +143,9 @@ class Board:
                 elif n == "y":
                     self.screen.blit(self.yellow, (self.size*i2 + start_x, self.size*i1 + start_y))
                 elif n == "b":
-                    self.screen.blit(self.blue, (self.size*i2 + start_x, self.size*i1 + start_y))                                                         
+                    self.screen.blit(self.blue, (self.size*i2 + start_x, self.size*i1 + start_y))
+                elif n == "v":
+                    self.screen.blit(self.gray, (self.size*i2 + start_x, self.size*i1 + start_y))
                 else:
                     continue    
     
@@ -336,6 +340,29 @@ class Player:
 
         self.square = Piece(Screen, Tiles, [["x", "x"], ["x", "x"]], self.available)
         self.square.assign_color(self.click_color)
+
+        self.piece_list = Piece(Screen, Tiles, 
+                                        [['v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v'], 
+                                        ['v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v'], 
+                                        ['v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v'], 
+                                        ['v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v'], 
+                                        ['v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v'], 
+                                        ['v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v'], 
+                                        ['v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v'], 
+                                        ['v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v'], 
+                                        ['v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v'], 
+                                        ['v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v'], 
+                                        ['v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v'], 
+                                        ['v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v'], 
+                                        ['v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v'], 
+                                        ['v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v'], 
+                                        ['v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v'], 
+                                        ['v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v'], 
+                                        ['v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v'], 
+                                        ['v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v'], 
+                                        ['v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v'], 
+                                        ['v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v']]
+                                        , self.available, False)
         
     def choose_piece(self, event_key):
         """
@@ -388,7 +415,13 @@ class Player:
             return self.S1
         elif event_key == pygame.K_x:
             return self.square
+        elif event_key == pygame.K_c:
+            return self.piece_list
         else:
             return False
 
+    # def get_availabilities(self):
+    #     """
+    #         Get a list of piece keys and availabilies
+    #     """
         

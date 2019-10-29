@@ -6,9 +6,9 @@
 import pygame
 import time
 
-from model import *
+from blockus_components import *
 
-def load(screen_dim, screen_fps, f1, f2, f3, f4, f5):
+def load(screen_dim, screen_fps, f1, f2, f3, f4, f5, f6):
     """
         Runs the tasks that only need to be called once
         Creates global variables which only exist in this script
@@ -27,11 +27,14 @@ def load(screen_dim, screen_fps, f1, f2, f3, f4, f5):
     global red
     global yellow
     global blue
+    global gray
     global tiles
     global board
+    # global every_piece_image
 
     # Initialize screen
     screen = Screen(screen_dim, screen_fps)
+    screen.start_board_display()
     
     # Initialize size of one piece
     size = piece_size(screen.screen_size, 20)
@@ -42,16 +45,17 @@ def load(screen_dim, screen_fps, f1, f2, f3, f4, f5):
     red = Tile(f3, size, "r")
     yellow = Tile(f4, size, "y")
     blue = Tile(f5, size, "b")
+    gray = Tile(f6, size, "v")
 
     # Add tiles to a single class
-    tiles = Tiles(white, green, red, yellow, blue)
+    tiles = Tiles(white, green, red, yellow, blue, gray)
 
     # Make a board
     # The array input -> "board" is a special case that creates a 20x20 'w' array
     board = Board(screen.board_screen, tiles, "board", False)
 
 
-def place_piece(player, board, piece):
+def place_piece(event_key, player, board, screen):
     """
         This function checks to see if a player's piece is available
 
@@ -59,64 +63,90 @@ def place_piece(player, board, piece):
 
         If not, it waits for a valid piece
     """
-    # Only run this if piece.available is True
-    # piece.available is instantiated at 1 at the time of creating pieces
-    if piece.available:
+    
 
-    # Draw status is True to start
+    if event_key == pygame.K_c:
+
+        piece = player.choose_piece(event_key)
         draw = True
-
-    # Draw the piece wherever the mouse is while the player chooses the piece location
         while draw:
-            board.draw()
             piece.draw()
 
-    # Now go through the logic of detecting a click and placing the piece accordingly
+            every_piece_image = pygame.transform.scale(pygame.image.load("all_tiles.png"), (550, 550))
+            screen.board_screen.blit(every_piece_image, (25, 25))
+            pygame.display.flip()
+
             for event in pygame.event.get():
-    
-    # Close the game whenever the x is hit
+                
+                # Close the game whenever the x is hit
                 if event.type == pygame.QUIT:
-                    pygame.quit()
-    
-    # Detect a mouse click event, snap mouse location to nearest integer
-                if pygame.mouse.get_pressed()[0]:
-                    mouse_x, mouse_y = event.pos
-                    mouse_x = int(mouse_x/size)
-                    mouse_y = int(mouse_y/size)
+                    pygame.quit()            
 
-    # Run board.is_valid to see if the move is valid
-                    if board.is_valid(piece, (mouse_x, mouse_y)):    
-
-    # If the move is valid, call modify_board to make changes to the board                   
-                        board.modify_board(piece, (mouse_x, mouse_y))
-
-    # If the move is not valid, call place_piece again with the inputs from your_turn
-    # Effectively, an invalid move restarts the move choice process and nothing happens
-                    else:
-                        place_piece(player, board, piece)
-
-    # Once the piece is placed, change draw condition to False
-                    draw = False
-
-    # Another possible event is for another key to get clicked
-    # If so, choose a new piece with player.choose_piece
-    # Call place_piece with the new piece input
                 if event.type == pygame.KEYDOWN:
-                    piece = player.choose_piece(event.key)
-                    place_piece(player, board, piece)
-
-    # Once the piece is placed, change draw condition to False
+                    place_piece(event.key, player, board, screen)
                     draw = False
-
-    # Update the display after going through to check the conditions of the piece
-                pygame.display.flip()
-
-    # If the piece has been played, call your_turn again so you don't go on the next player yet
+    
     else:
-        print("You already played this piece!")
-        your_turn(player, board)
+        piece = player.choose_piece(event_key)
 
-def your_turn(player, board):
+    # Only run this if piece.available is True
+    # piece.available is instantiated at 1 at the time of creating pieces
+        if piece.available:
+
+        # Draw status is True to start
+            draw = True
+
+        # Draw the piece wherever the mouse is while the player chooses the piece location
+            while draw:
+                board.draw()
+                piece.draw()
+
+        # Now go through the logic of detecting a click and placing the piece accordingly
+                for event in pygame.event.get():
+        
+        # Close the game whenever the x is hit
+                    if event.type == pygame.QUIT:
+                        pygame.quit()
+        
+        # Detect a mouse click event, snap mouse location to nearest integer
+                    if pygame.mouse.get_pressed()[0]:
+                        mouse_x, mouse_y = event.pos
+                        mouse_x = int(mouse_x/size)
+                        mouse_y = int(mouse_y/size)
+
+        # Run board.is_valid to see if the move is valid
+                        if board.is_valid(piece, (mouse_x, mouse_y)):    
+
+        # If the move is valid, call modify_board to make changes to the board                   
+                            board.modify_board(piece, (mouse_x, mouse_y))
+
+        # If the move is not valid, call place_piece again with the inputs from your_turn
+        # Effectively, an invalid move restarts the move choice process and nothing happens
+                        else:
+                            place_piece(event.key, player, board, screen)
+
+        # Once the piece is placed, change draw condition to False
+                        draw = False
+
+        # Another possible event is for another key to get clicked
+        # If so, choose a new piece with player.choose_piece
+        # Call place_piece with the new piece input
+                    if event.type == pygame.KEYDOWN:
+                        # piece = player.choose_piece(event.key)
+                        place_piece(event.key, player, board, screen)
+
+        # Once the piece is placed, change draw condition to False
+                        draw = False
+
+        # Update the display after going through to check the conditions of the piece
+                    pygame.display.flip()
+
+        # If the piece has been played, call your_turn again so you don't go on the next player yet
+        else:
+            print("You already played this piece!")
+            your_turn(player, board, screen)
+
+def your_turn(player, board, screen):
     """
         Takes a player and a board, waits for keyboard input
 
@@ -150,10 +180,10 @@ def your_turn(player, board):
                 if player.choose_piece(event.key):
 
     # Choose a piece
-                    piece = player.choose_piece(event.key)
+                    # piece = player.choose_piece(event.key)
 
     # Call place_piece go through the process of placing a piece on the board
-                    place_piece(player, board, piece)
+                    place_piece(event.key, player, board, screen)
 
     # Once the piece has been successfully played, running = False and the turn is over
                     running = False
@@ -162,7 +192,7 @@ def your_turn(player, board):
                 else:
                     pass
 
-def play(p1, p2, p3, p4, p1color, p2color, p3color, p4color):
+def play(p1, p2, p3, p4, p1color, p2color, p3color, p4color, screen):
     """
         Initialize players and pieces
         Run a cycle so that each player gets a turn, one after the other
@@ -188,26 +218,27 @@ def play(p1, p2, p3, p4, p1color, p2color, p3color, p4color):
     while True:
         if turn_counter == 0:
 
-            your_turn(p1, board)
+            your_turn(p1, board, screen)
             turn_counter += 1
 
         if turn_counter == 1:
 
-            your_turn(p2, board)
+            your_turn(p2, board, screen)
             turn_counter += 1
 
         if turn_counter == 2:
 
-            your_turn(p3, board)
+            your_turn(p3, board, screen)
             turn_counter += 1
 
         if turn_counter == 3:
 
-            your_turn(p4, board)    
+            your_turn(p4, board, screen)    
             turn_counter = 0
 
+
 # Instantiate globals including a screen, tiles, and a board
-load(600, 60, "white.png", "green.png", "red.png", "yellow.png", "blue.png")
+load(600, 60, "white.png", "green.png", "red.png", "yellow.png", "blue.png", "gray.jpg")
 
 # Play the game with some fun people
-play("shawn", "navi", "ben", "hill", "blue", "green", "red", "yellow")
+play("shawn", "navi", "ben", "hill", "blue", "green", "red", "yellow", screen)
