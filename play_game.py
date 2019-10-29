@@ -128,6 +128,7 @@ def place_piece(event_key, player, board, screen):
     else:
         piece = player.choose_piece(event_key)
 
+
     # Only run this if piece.available is True
     # piece.available is instantiated at 1 at the time of creating pieces
         if piece.available:
@@ -142,11 +143,18 @@ def place_piece(event_key, player, board, screen):
 
         # Now go through the logic of detecting a click and placing the piece accordingly
                 for event in pygame.event.get():
-        
+
         # Close the game whenever the x is hit
                     if event.type == pygame.QUIT:
                         pygame.quit()
-        
+
+                    # if event.type == pygame.KEYDOWN:
+                    #     if event.key == pygame.K_m:
+                    #         new_array = piece.rotate_piece()
+                            
+                    #         place_piece(event.key, player, board, screen)
+                    #         draw = False
+
         # Detect a mouse click event, snap mouse location to nearest integer
                     if pygame.mouse.get_pressed()[0]:
                         mouse_x, mouse_y = event.pos

@@ -212,13 +212,18 @@ class Piece(Board):
         self.available = available
 
     def rotate_piece(self):
-        """Modify array such that the piece rotates."""
-        rotated_array = np.rot90(self.array, k=3) 
-        print(type(rotated_array))
+        """Modify array such that the piece rotates.
+        returns the rotated array        
+        """
+
+        return np.rot90(self.array, k = 3)
+        # rotated_array = np.rot90(self.array, k = 3)
+        # self.array = rotated_array
+
+        # print(type(rotated_array))
         # newgrid = []
         # for i in range(len(self.array[0])): #assuming they all have the same length
         #     newgrid.append([x[i] for x in self.array])
-        self.array = rotated_array
 
     def assign_color(self, color):
         """
@@ -233,6 +238,8 @@ class Piece(Board):
     # If the entry is not blank, change the color
                 if not n == ".":
                     self.array[row][column] = color
+
+
     
 
 
