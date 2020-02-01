@@ -17,7 +17,7 @@ def load(screen_dim, screen_fps, f1, f2, f3, f4, f5, f6):
 
         screen_dim and screen_fps are used as input to initialize Screen object
 
-        f1, f2, f3, f4, f5 are the strings of the file names associated with tile images
+        f1, f2, f3, f4, f5 are the names of the files containing each tile
     """
 
     global screen
@@ -35,7 +35,7 @@ def load(screen_dim, screen_fps, f1, f2, f3, f4, f5, f6):
     # Initialize screen
     screen = Screen(screen_dim, screen_fps)
     screen.start_board_display()
-    
+
     # Initialize size of one piece
     size = piece_size(screen.screen_size, 20)
 
@@ -58,13 +58,13 @@ def one_status(input, coords, screen):
     """
 
     """
-    font = pygame.font.Font('Helvetica.ttf', 16) 
+    font = pygame.font.Font('Helvetica.ttf', 16)
     if input == "Available":
         text = font.render(input, True, (0,0,0), (0, 255, 0))
     else:
         text = font.render(input, True, (0,0,0), (255, 0, 0))
 
-    textRect = text.get_rect()  
+    textRect = text.get_rect()
     textRect.center = coords
     screen.board_screen.blit(text, textRect)
 
@@ -109,22 +109,22 @@ def place_piece(event_key, player, board, screen):
         draw = True
         while draw:
             piece.draw()
-            
+
             every_piece_image = pygame.transform.scale(pygame.image.load("all_tiles.png"), (550, 550))
             screen.board_screen.blit(every_piece_image, (25, 25))
             draw_status(player, screen)
             pygame.display.flip()
 
             for event in pygame.event.get():
-                
+
                 # Close the game whenever the x is hit
                 if event.type == pygame.QUIT:
-                    pygame.quit()            
+                    pygame.quit()
 
                 if event.type == pygame.KEYDOWN:
                     place_piece(event.key, player, board, screen)
                     draw = False
-    
+
     else:
         piece = player.choose_piece(event_key)
 
@@ -155,9 +155,9 @@ def place_piece(event_key, player, board, screen):
                         mouse_y = int(mouse_y/size)
 
         # Run board.is_valid to see if the move is valid
-                        if board.is_valid(piece, (mouse_x, mouse_y)):    
+                        if board.is_valid(piece, (mouse_x, mouse_y)):
 
-        # If the move is valid, call modify_board to make changes to the board                   
+        # If the move is valid, call modify_board to make changes to the board
                             board.modify_board(piece, (mouse_x, mouse_y))
 
         # If the move is not valid, call place_piece again with the inputs from your_turn
@@ -210,7 +210,7 @@ def your_turn(player, board, screen):
 
     # Update the entire board each time through the while loop
         pygame.display.flip()
-    
+
     # Get pygame events
     # End the game if the x is hit
     # Otherwise wait for a pygame.KEYDOWN event
@@ -279,12 +279,12 @@ def play(p1, p2, p3, p4, p1color, p2color, p3color, p4color, screen):
 
         if turn_counter == 3:
 
-            your_turn(p4, board, screen)    
+            your_turn(p4, board, screen)
             turn_counter = 0
 
 
 # Instantiate globals including a screen, tiles, and a board
-load(600, 60, "white.png", "green.png", "red.png", "yellow.png", "blue.png", "gray.jpg")
+load(1000, 60, "white.png", "green.png", "red.png", "yellow.png", "blue.png", "gray.jpg")
 
 # Play the game with some fun people
 play("shawn", "navi", "ben", "hill", "blue", "green", "red", "yellow", screen)

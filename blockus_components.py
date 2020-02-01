@@ -1,10 +1,10 @@
 import pygame
 import numpy as np
 
-# Functions to load images
+
 def piece_size(board_size, n):
     """
-    
+
     Take board dimension and number of desired pieces per board
     Return the length of one edge of a tile as int type for pygame.transform.scale
 
@@ -19,10 +19,10 @@ class Screen:
     def __init__(self, screen_size, fps):
         """
         Initialize the screen dimension, and fps. Set the board's screen size.
-        
+
         Arguments:
             board_screen_dimension : integer
-                Number that is the height and width of the board screen
+                Height and width of the board screen in pixels
 
             fps : integer
                 Frames per second
@@ -40,16 +40,10 @@ class Screen:
 
         # Avoid copyright issues with convenient typos
         pygame.display.set_caption('Blockus')
-        
+
         self.board_screen.fill((177,177,177))
         self.clock = pygame.time.Clock()
 
-    def display_update(self, rect):
-        """
-        Updates the display by the fps set.
-        """
-        pygame.display.update(rect)
-        self.clock.tick(self.fps)
 
 class Tile:
     """
@@ -63,7 +57,7 @@ class Tile:
         self.image = pygame.transform.scale(im, (size, size))
         self.size = size
         self.color_code = color_code
-    
+
 
 class Tiles:
     """
@@ -118,7 +112,7 @@ class Board:
             self.array = board
         else:
             self.array = array
-            
+
         self.get_mouse = get_mouse
 
     def draw(self):
@@ -130,26 +124,26 @@ class Board:
             (start_x, start_y) = pygame.mouse.get_pos()
         else:
             (start_x, start_y) = (0,0)
-        
+
         # Go through every element in the array
         for i1, m in enumerate(self.array):
             for i2, n in enumerate(m):
 
                 if n == "w":
-                    self.screen.blit(self.white, (self.size*i2 + start_x, self.size*i1 + start_y))
+                    self.screen.blit(self.white, (self.size*i2 + start_x - start_x % self.size, self.size*i1 + start_y - start_y % self.size))
                 elif n == "g":
-                    self.screen.blit(self.green, (self.size*i2 + start_x, self.size*i1 + start_y))
+                    self.screen.blit(self.green, (self.size*i2 + start_x - start_x % self.size, self.size*i1 + start_y - start_y % self.size))
                 elif n == "r":
-                    self.screen.blit(self.red, (self.size*i2 + start_x, self.size*i1 + start_y))
+                    self.screen.blit(self.red, (self.size*i2 + start_x - start_x % self.size, self.size*i1 + start_y - start_y % self.size))
                 elif n == "y":
-                    self.screen.blit(self.yellow, (self.size*i2 + start_x, self.size*i1 + start_y))
+                    self.screen.blit(self.yellow, (self.size*i2 + start_x - start_x % self.size, self.size*i1 + start_y - start_y % self.size))
                 elif n == "b":
-                    self.screen.blit(self.blue, (self.size*i2 + start_x, self.size*i1 + start_y))
+                    self.screen.blit(self.blue, (self.size*i2 + start_x - start_x % self.size, self.size*i1 + start_y - start_y % self.size))
                 elif n == "v":
                     self.screen.blit(self.gray, (self.size*i2 + start_x, self.size*i1 + start_y))
                 else:
-                    continue    
-    
+                    continue
+
     def is_valid(self, modifier, start):
         """
             Decide if a move is valid before trying to place it
@@ -160,12 +154,12 @@ class Board:
     # Go through each element in the array that defines modifier
         for row, m in enumerate(modifier.array):
             for column, n in enumerate(m):
-    
+
     # Compare each board element with each piece element
                 try:
                     check = self.array[row + start[1]][column + start[0]]
 
-    # If the board element would overlap with an already filled board tile, return False               
+    # If the board element would overlap with an already filled board tile, return False
                     if n != "." and check != "w":
                         return False
 
@@ -174,7 +168,7 @@ class Board:
                     return False
 
     # If the piece is within range and doesn't overlap an existing piece, is_valid returns True
-        return True       
+        return True
 
     def modify_board(self, modifier, start):
         """
@@ -198,7 +192,7 @@ class Board:
                     pass
 
     # Once the code runs, the piece is made unavailable
-        modifier.available = 0    
+        modifier.available = 0
 
 
 
@@ -215,7 +209,7 @@ class Piece(Board):
         if event_key == pygame.K_LEFT:
             self.array = np.rot90(self.array, k = 1)
             # continue
-    
+
         if event_key == pygame.K_RIGHT:
             self.array = np.rot90(self.array, k = 3)
             # continue
@@ -226,7 +220,7 @@ class Piece(Board):
 
         if event_key == pygame.K_DOWN:
             self.array = np.flip(self.array, 0)
-            # continue        
+            # continue
 
     def assign_color(self, color):
         """
@@ -237,13 +231,13 @@ class Piece(Board):
     # Go through each element in the array
         for row, m in enumerate(self.array):
             for column, n in enumerate(m):
-    
+
     # If the entry is not blank, change the color
                 if not n == ".":
                     self.array[row][column] = color
 
 
-    
+
 
 
 class Player:
@@ -275,12 +269,12 @@ class Player:
             self.click_color = "g"
         if self.player_color == "yellow":
             self.click_color = "y"
-            
+
     def initialize_pieces(self, Screen, Tiles, available = 1):
         """
         Initializes all pieces objects for a player.
         Makes a Piece object with array input, redefines the color with Piece.assign_color
-        
+
         Arguments:
             Screen : Pygame object
                 Pygame screen object
@@ -298,11 +292,11 @@ class Player:
         self.V5.assign_color(self.click_color)
 
         self.V3 = Piece(Screen, Tiles, [["x", "x"], ["x","."]], self.available)
-        self.V3.assign_color(self.click_color)        
+        self.V3.assign_color(self.click_color)
 
         self.X = Piece(Screen, Tiles, [[".", "x", "."], ["x", "x", "x"], [".", "x", "."]], self.available)
         self.X.assign_color(self.click_color)
-        
+
         self.N = Piece(Screen, Tiles, [[".", ".", "x", "x"], ["x", "x", "x", "."]], self.available)
         self.N.assign_color(self.click_color)
 
@@ -316,7 +310,7 @@ class Player:
         self.Y.assign_color(self.click_color)
 
         self.U = Piece(Screen, Tiles, [["x", ".", "x"], ["x", "x", "x"]], self.available)
-        self.U.assign_color(self.click_color)  
+        self.U.assign_color(self.click_color)
 
         self.P = Piece(Screen, Tiles, [["x", "x", "."], ["x", "x", "x"]], self.available)
         self.P.assign_color(self.click_color)
@@ -325,10 +319,10 @@ class Player:
         self.W.assign_color(self.click_color)
 
         self.F = Piece(Screen, Tiles, [["x", "x", "."], [".", "x", "x"], [".", "x", "."]], self.available)
-        self.F.assign_color(self.click_color)      
+        self.F.assign_color(self.click_color)
 
         self.T5 = Piece(Screen, Tiles, [["x", "x", "x"], [".", "x", "."], [".", "x", "."]], self.available)
-        self.T5.assign_color(self.click_color)          
+        self.T5.assign_color(self.click_color)
 
         self.T4 = Piece(Screen, Tiles, [["x", "x", "x"], [".", "x", "."]], self.available)
         self.T4.assign_color(self.click_color)
@@ -357,29 +351,29 @@ class Player:
         self.square = Piece(Screen, Tiles, [["x", "x"], ["x", "x"]], self.available)
         self.square.assign_color(self.click_color)
 
-        self.piece_list = Piece(Screen, Tiles, 
-                                        [['v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v'], 
-                                        ['v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v'], 
-                                        ['v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v'], 
-                                        ['v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v'], 
-                                        ['v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v'], 
-                                        ['v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v'], 
-                                        ['v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v'], 
-                                        ['v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v'], 
-                                        ['v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v'], 
-                                        ['v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v'], 
-                                        ['v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v'], 
-                                        ['v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v'], 
-                                        ['v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v'], 
-                                        ['v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v'], 
-                                        ['v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v'], 
-                                        ['v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v'], 
-                                        ['v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v'], 
-                                        ['v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v'], 
-                                        ['v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v'], 
+        self.piece_list = Piece(Screen, Tiles,
+                                        [['v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v'],
+                                        ['v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v'],
+                                        ['v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v'],
+                                        ['v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v'],
+                                        ['v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v'],
+                                        ['v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v'],
+                                        ['v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v'],
+                                        ['v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v'],
+                                        ['v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v'],
+                                        ['v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v'],
+                                        ['v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v'],
+                                        ['v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v'],
+                                        ['v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v'],
+                                        ['v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v'],
+                                        ['v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v'],
+                                        ['v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v'],
+                                        ['v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v'],
+                                        ['v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v'],
+                                        ['v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v'],
                                         ['v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v', 'v']]
                                         , self.available, False)
-        
+
     def choose_piece(self, event_key):
         """
             Associates each piece with a keyboard stroke
@@ -394,9 +388,9 @@ class Player:
         elif event_key == pygame.K_w:
             return self.V3
         elif event_key == pygame.K_e:
-            return self.X    
+            return self.X
         elif event_key == pygame.K_r:
-            return self.N 
+            return self.N
         elif event_key == pygame.K_t:
             return self.L5
         elif event_key == pygame.K_i:
@@ -449,14 +443,12 @@ class Player:
         """
             Goes through all of a player's pieces and checks to see if that piece is available
         """
-        pieces = [self.S1, self.S2, self.V3, self.S3, self.square, self.T4, self.S4, 
-                        self.L4, self.Z4, self.L5, self.T5, self.V5, self.N, self.Z5, 
+        pieces = [self.S1, self.S2, self.V3, self.S3, self.square, self.T4, self.S4,
+                        self.L4, self.Z4, self.L5, self.T5, self.V5, self.N, self.Z5,
                         self.S5, self.P, self.W, self.U, self.F, self.X, self.Y]
         blank_list = []
-        
+
         for piece in pieces:
             blank_list = self.print_available(blank_list, piece)
 
         return blank_list
-        
-
