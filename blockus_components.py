@@ -115,6 +115,13 @@ class Board:
 
         self.get_mouse = get_mouse
 
+
+    def draw_logic(self, color, i1, i2, start_x, start_y):
+        """
+            Define the way that pieces get drawn to reduce clutter in draw
+        """
+        self.screen.blit(color, (self.size*i2 + start_x - start_x % self.size, self.size*i1 + start_y - start_y % self.size))
+
     def draw(self):
         """
             Draw a piece or a board to screen object
@@ -130,19 +137,20 @@ class Board:
             for i2, n in enumerate(m):
 
                 if n == "w":
-                    self.screen.blit(self.white, (self.size*i2 + start_x - start_x % self.size, self.size*i1 + start_y - start_y % self.size))
+                    self.draw_logic(self.white, i1, i2, start_x, start_y)
                 elif n == "g":
-                    self.screen.blit(self.green, (self.size*i2 + start_x - start_x % self.size, self.size*i1 + start_y - start_y % self.size))
+                    self.draw_logic(self.green, i1, i2, start_x, start_y)
                 elif n == "r":
-                    self.screen.blit(self.red, (self.size*i2 + start_x - start_x % self.size, self.size*i1 + start_y - start_y % self.size))
+                    self.draw_logic(self.red, i1, i2, start_x, start_y)
                 elif n == "y":
-                    self.screen.blit(self.yellow, (self.size*i2 + start_x - start_x % self.size, self.size*i1 + start_y - start_y % self.size))
+                    self.draw_logic(self.yellow, i1, i2, start_x, start_y)
                 elif n == "b":
-                    self.screen.blit(self.blue, (self.size*i2 + start_x - start_x % self.size, self.size*i1 + start_y - start_y % self.size))
+                    self.draw_logic(self.blue, i1, i2, start_x, start_y)
                 elif n == "v":
-                    self.screen.blit(self.gray, (self.size*i2 + start_x, self.size*i1 + start_y))
+                    self.draw_logic(self.gray, i1, i2, start_x, start_y)
                 else:
                     continue
+
 
     def is_valid(self, modifier, start):
         """
@@ -152,11 +160,16 @@ class Board:
                 start : Tuple of mouse location as mapped to the 20x20 game board
         """
     # Go through each element in the array that defines modifier
+    # m is the list of every element in a row
         for row, m in enumerate(modifier.array):
+
+    # n is the individual element, specifically the letter corresponding to color
             for column, n in enumerate(m):
 
     # Compare each board element with each piece element
                 try:
+    # start[1] is the y element of mouse pos., start[0] is the x element
+    # check is the element of the array "under" the tile currently being checked
                     check = self.array[row + start[1]][column + start[0]]
 
     # If the board element would overlap with an already filled board tile, return False

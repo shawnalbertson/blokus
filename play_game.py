@@ -58,7 +58,7 @@ def one_status(input, coords, screen):
     """
 
     """
-    font = pygame.font.Font('Helvetica.ttf', 16)
+    font = pygame.font.Font('Graphics/Helvetica.ttf', 16)
     if input == "Available":
         text = font.render(input, True, (0,0,0), (0, 255, 0))
     else:
@@ -110,7 +110,7 @@ def place_piece(event_key, player, board, screen):
         while draw:
             piece.draw()
 
-            every_piece_image = pygame.transform.scale(pygame.image.load("all_tiles.png"), (550, 550))
+            every_piece_image = pygame.transform.scale(pygame.image.load("Graphics/all_tiles.png"), (550, 550))
             screen.board_screen.blit(every_piece_image, (25, 25))
             draw_status(player, screen)
             pygame.display.flip()
@@ -284,7 +284,7 @@ def play(p1, p2, p3, p4, p1color, p2color, p3color, p4color, screen):
 
 
 # Instantiate globals including a screen, tiles, and a board
-load(1000, 60, "white.png", "green.png", "red.png", "yellow.png", "blue.png", "gray.jpg")
+load(1000, 60, "Graphics/white.png", "Graphics/green.png", "Graphics/red.png", "Graphics/yellow.png", "Graphics/blue.png", "Graphics/gray.jpg")
 
 # Play the game with some fun people
 play("shawn", "navi", "ben", "hill", "blue", "green", "red", "yellow", screen)
