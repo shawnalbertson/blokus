@@ -14,9 +14,9 @@ one player runs out of pieces.
 
 To interact with play_game.py you will need to include the following libraries:
 
-import numpy as np
-import pygame
-import time
+  import numpy as np
+  import pygame
+  import time
 
 ## How to run the code
 
