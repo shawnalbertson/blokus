@@ -3,7 +3,7 @@ from pygame.locals import *
 from classes import Screen, Player, Tile, Board, Piece
 
 def start_game(player1, player2, player3, player4, player1color, player2color, player3color, player4color):
-    screen = Screen(900,900, 90)
+    screen = Screen(500,500, 90)
     screen.start_board_display()
 
     player1 = Player(player1, player1color)
